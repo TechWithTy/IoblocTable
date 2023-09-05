@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<!-- Verify JS Integrity https://www.programiz.com/javascript/online-compiler/ -->
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Experience</title>
+    <style>
+      .custom-table-content {
+        margin: 20px;
+        background: #1a1a1a;
+      }
+
+      .custom-tab-button {
+        padding: 12px;
+        border: 3px solid grey;
+        background-color: transparent;
+        cursor: pointer;
+        outline: none;
+        border-radius: 7px;
+        color: white;
+font-family: inherit;
+  font-size: 1.2em;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1;
+      }
+#tabImage{
+  height: 100% !important;
+  width: 100%;
+  object-fit: cover !important;
+}
+      .custom-tab-button:active,
+      .active {
+        background-color: #31B469;
+        border:          3px solid #1a1a1a;
+        color: white;
+        
+      }
+
+      h3,
+      span {
+        display: block;
+      }
+
+      /* Flexbox styles for two-column layout */
+      .main-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        flex-wrap: wrap;
+        /* This allows items to wrap to the next line on smaller screens */
+      }
+
+      .main-container>div {
+        flex: 1;
+        /* Both children of the main container will take up equal width */
+        min-width: calc(50% - 10px);
+        /* Subtracting a small value to account for any potential margins or padding */
+        box-sizing: border-box;
+        /* To ensure padding and border are included in the element's total width */
+      }
+
+      /* Media query for mobile screens */
+      @media (max-width: 768px) {
+
+        /* This breakpoint can be adjusted based on when you want to switch to single column */
+        .main-container>div {
+          min-width: 100%;
+          /* On smaller screens, each child will take up full width, resulting in a single column layout */
+        }
+      }
+
+      #productSelector {
+        width: auto;
+        /* Adjust the width as needed */
+        font-size: 3.5em !important;
+        /* H2 size */
+        color: black;
+        /* Green color */
+        appearance: none;
+        /* Remove default styling */
+        -webkit-appearance: none;
+        /* For Safari and Chrome */
+        -moz-appearance: none;
+        /* For Firefox */
+        padding-right: 10px;
+        /* Reduced space for the custom arrow */
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z" fill="%2331B469"/></svg>') no-repeat right 5px center;
+        background-size: 27.25px;
+        /* Adjusted size of the arrow */
+        background-color: transparent;
+        /* Transparent dropdown */
+        border: none;
+        /* Removed border */
+        color: white;
+        margin-bottom: 0 !important;
+        height: auto !important;
+        padding: 0 0 .3em 0 !important;
+font-family: "Barlow",sans-serif;
+  font-style: normal;
+  font-weight: 600  !important;
+      }
+
+
+      /* Hide default dropdown arrow for IE */
+      #productSelector:-ms-expand {
+        display: none;
+      }
+
+      /* Style dropdown options */
+      #productSelector option {
+        padding: 10px;
+        color: white
+      }
+
+      @media screen and (max-width: 768px) {
+        div[id^="tab"]>div {
+          padding-left: 0;
+        }
+
+        div[id*="-column1"],
+        div[id*="-column2"] {
+          width: 100%;
+          float: none;
+        }
+      }
+
+      .product-wrapper {
+        display: flex;
+        align-items: center;
+        float: left;
+        /* Floats the .productwrapper to the left */
+
+      }
+
+      .dropdown-container {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+
+        float: left;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        /* Center horizontally */
+        align-items: center;
+        /* Center vertically */
+        height: 100%;
+        margin-top: 5em;
+        /* Take up full height of parent */
+      }
+
+      #specs-column1,
+      #specs-column2 {
+        color: white;
+
+      }
+
+      #docs-column1,
+      #docs-column2 {
+        color: white;
+
+      }
+
+      .specs-title {
+        margin: 0;
+        color: white;
+        font-weight: bold !important;
+
+      }
+
+      .doc-title {
+        color: white !important;
+        margin: 0 !important;
+      }
+
+      #productSelector {
+        width: 100%;
+        /* Adjusted width to align with the titles */
+      }
+
+      .drop-down-option {
+        color: black !important;
+      }
+
+@media (min-width: 992px) {
+  
+   .specs-column1,
+   .specs-column2,
+    .docs-column1,
+   .docs-column2, #tab1,#tab2{
+        min-height: 600px !important;
+    }
+
+}
+
+      .specs-subtitle,
+      .specs-title {
+        color: #878787;
+
+        font-size: 1em;
+        font-weight: inherit;
+
+      }
+
+      .specs-subtitle {
+
+        color: #ffffff;
+
+
+        line-height: 1.4;
+        font-size: 1em !important;
+margin: 0;
+        font-weight: inherit;
+
+      }
+
+
+.specs-link-div,.docs-link-div{
+  margin-top: 1em;
+  margin-right: 0px;
+  margin-bottom: 1em;
+  padding: 0 1em 0 0;
+}
+
+@media (max-width: 767px) {
+    .specs-column1, 
+    .specs-column2, 
+    .docs-column1, 
+    .docs-column2 {
+        float: none;
+        width: 100% !important;
+    }
+}
+    </style>
+  </head>
+
+  <body class="custom-table-content">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;" class="main-container">
+      <!-- Image div -->
+      <div class="image-container">
+        <img id="tabImage" src="https://placehold.co/600x400/EEE/31343C" alt="Need CDN Link" style="height: 400px;">
+      </div>
+
+
+      <div id="productDisplay" style="flex: 1; display: none;">
+        <div style="flex: 1; margin-left: 20px;">
+
+          <!-- Wrapper for dropdown and tab buttons -->
+          <div style="display: flex; flex-direction: column;">
+            <!-- Dropdown here -->
+            <div class="dropdown-container">
+
+              <select id="productSelector">
+                <!-- Options will be populated by JavaScript -->
+              </select>
+            </div>
+
+            <!-- Tab buttons here -->
+            <div style="display: flex; justify-content: space-between;">
+              <button id="btn1" class="custom-tab-button " onclick="showTab('tab1')" style="flex: 1; margin-right: 5px;">Specifications</button>
+              <button class="custom-tab-button" id="btn2" onclick="showTab('tab2')" style="flex: 1;">Docs & Support</button>
+            </div>
+          </div>
+
+          <!-- Tabs content -->
+          <div id="tab1" style="display: none; padding: 10px;">
+            <div id="specs-column1" class="specs-column1" style="float: left; width: 50%;">
+              <!-- Content for specifications column 1 will go here -->
+            </div>
+            <div id="specs-column2" class="specs-column2" style="float: right; width: 50%;">
+              <!-- Content for specifications column 2 will go here -->
+            </div>
+            <div style="clear: both;"></div>
+          </div>
+          <div id="tab2" style="display: none; padding: 10px;">
+            <div id="docs-column1" class="docs-column1" style="float: left; width: 50%;">
+              <!-- Content for docs column 1 will go here -->
+            </div>
+            <div id="docs-column2" class="docs-column1" style="float: right; width: 50%;">
+              <!-- Content for docs column 2 will go here -->
+            </div>
+            <div style="clear: both;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Inline CSS -->
+
+
+    <!-- Inline JavaScript -->
+    <script>
+      var inSIGHTS4 = {
+        "specs-column1": [{
+            title: "Display",
+            content: "Color TFT"
+          },
+          {
+            title: "Size",
+            content: "4.3 in (diagonal)"
+          },
+          {
+            title: "Resolution",
+            content: "480 x 272 pixel"
+          },
+          {
+            title: "Backlight",
+            content: "1000 nits (typical)"
+          },
+          {
+            title: "Contrast Ratio",
+            content: "800:1 (typical)"
+          }, {
+            title: "Viewing Angle",
+            content: "170°"
+          },
+          {
+            title: "Keys",
+            content: "8 tactile keys (RGB LED illuminated, individually controllable and dimmable)"
+          },
+          {
+            title: "Dimensions (W x H x D)",
+            content: "147 x 128 x 27 mm"
+          },
+          {
+            title: "Operating Temperature",
+            content: "-30° - 70°C"
+          },
+          {
+            title: "Power Supply Voltage",
+            content: "VCC 8 - 32VDC"
+          },
+
+        ],
+        "specs-column2": [{
+            title: "Power Consumption",
+            content: "≤5W",
+          }, {
+            title: "Part Numbers",
+            content: "100001380, 100001381"
+          },
+
+        ],
+        "docs-column1": [{
+            title: "Data Sheet",
+            content: "Download",
+            link: "https://drive.google.com/file/d/1Jj_p2EvbML_afEZe7zfy8p3hDS-yMO4G/view?usp=sharing" // Sample link for downloading
+          }, ,
+          {
+            title: "3D Model (STEP)",
+            content: "Download",
+            link: "https://drive.google.com/file/d/1NEsCBEYE4M-kx6D_QlqS6bMRDDrQpQ4v/view?usp=sharing"
+          },
+          
+        ]
+,
+          "docs-column2": [ {
+            title: "View Support Portal",
+            content: "Explore",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/folders/6000224962"
+          }
+        ],      };
+
+      var inSIGHTS7Data = {
+        "specs-column1": [{
+            title: "Display",
+            content: "Color TFT"
+          },
+          {
+            title: "Size",
+            content: "7 in (diagonal)"
+          },
+          {
+            title: "Resolution",
+            content: "1024 x 600 pixel"
+          },
+          {
+            title: "Backlight",
+            content: "1000 nits (typical)"
+          },
+          {
+            title: "Contrast Ratio",
+            content: "800:1 (typical)"
+          },
+          {
+            title: "Viewing Angle",
+            content: "170°"
+          },
+          {
+            title: "Keys",
+            content: "10 tactile keys (RGB LED illuminated, individually controllable and dimmable)"
+          },
+          {
+            title: "Touchscreen",
+            content: "Projected capacitive (PCAP)"
+          }
+        ],
+        "specs-column2": [{
+            title: "Dimensions (W x H x D)",
+            content: "209 x 166 x 42 mm"
+          },
+          {
+            title: "Protection Class",
+            content: "IP65"
+          },
+          {
+            title: "Operating Temperature",
+            content: "-30° - 70°C"
+          },
+          {
+            title: "Power Supply Voltage",
+            content: "VCC 8 - 32VDC"
+          },
+          {
+            title: "Power Consumption",
+            content: "≤10W"
+          },
+          {
+            title: "Part Number",
+            content: "100001384"
+          }
+        ],
+        "docs-column1": [{
+            title: "Data Sheet",
+            content: "Download",
+            link: "https://drive.google.com/file/d/1Tz6v5cni45ZEhUaDeiZCLFxpXLcI695I/view?usp=sharing"
+          },
+          {
+            title: "3D Model (STEP)",
+            content: "Download",
+            link: "https://drive.google.com/file/d/11_Z-DKyYnwzXoY4dDk0LAnKgciXkjvQr/view?usp=sharing"
+          },
+        
+        ]
+,
+          "docs-column2": [ {
+            title: "View Support Portal",
+            content: "Explore",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/folders/6000224962"
+          }
+        ],        // You can also add "docs-column1" and "docs-column2" if needed
+      };
+
+      var inSIGHTS12Data = {
+        "specs-column1": [{
+            title: "Display",
+            content: "Color TFT"
+          },
+          {
+            title: "Size",
+            content: "12.3 in (diagonal)"
+          },
+          {
+            title: "Resolution",
+            content: "1920 x 720 pixel"
+          },
+          {
+            title: "Backlight",
+            content: "1000 nits (typical)"
+          },
+          {
+            title: "Contrast Ratio",
+            content: "1100:1 (typical)"
+          },
+          {
+            title: "Viewing Angle",
+            content: "170°"
+          },
+          {
+            title: "Keys",
+            content: "4 tactile keys (RGB LED illuminated, individually controllable and dimmable), 1 rotary-push encoder"
+          },
+          {
+            title: "Touchscreen",
+            content: "Projected capacitive (PCAP)"
+          },
+          {
+            title: "Dimensions (W x H x D)",
+            content: "341 x 166 x 52.2 mm"
+          },
+          {
+            title: "Protection Class",
+            content: "IP65"
+          },
+          {
+            title: "Operating Temperature",
+            content: "-30° - 70°C"
+          },
+
+        ],
+        "specs-column2": [{
+            title: "Power Supply Voltage",
+            content: "VCC 9 - 32VDC"
+          },
+          {
+            title: "Power Consumption",
+            content: "≤25W"
+          },
+          {
+            title: "Part Number",
+            content: "100001385"
+          }
+        ],
+        "docs-column1": [{
+            title: "Data Sheet",
+            content: "Download",
+            link: "https://drive.google.com/file/d/11cg5Qu7hz0U3uHBGBBLcrrj7GcGTkPwl/view?usp=sharing"
+          },
+          {
+            title: "3D Model (STEP)",
+            content: "Download",
+            link: "https://drive.google.com/file/d/1U0n4Tlel6xx7eIxzhNp6Vzd4ct5moxxb/view?usp=sharing"
+          },
+          
+        ]
+        ,
+          "docs-column2": [ {
+            title: "View Support Portal",
+            content: "Explore",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/folders/6000224962"
+          }
+        ],
+      };
+      var ioBLOC6Data = {
+        "specs-column1": [{
+            title: "Communication Protocol",
+            content: "SAE J1939"
+          },
+          {
+            title: "Input Variants",
+            content: "Multifunctional, Analog, Frequency, Digital, or Ratiometric"
+          },
+          {
+            title: "Power Supply Voltage",
+            content: "8 - 32VDC"
+          },
+          {
+            title: "Operating Current",
+            content: "13A Max"
+          },
+          {
+            title: "Module Connector",
+            content: "DT04-12PA"
+          },
+          {
+            title: "Mating Connector",
+            content: "DT06-12SA"
+          },
+          {
+            title: "Mating Contact",
+            content: "0462-201-16141"
+          },
+          {
+            title: "Mating Wedge Lock",
+            content: "W12P"
+          },
+          {
+            title: "Dimensions (L x W x H)",
+            content: "3.7 x 5.15 x 1.86 in"
+          },
+          {
+            title: "Protection Class",
+            content: "IP67"
+          },
+
+        ],
+        "specs-column2": [{
+            title: "Mechanical Shock",
+            content: "50g Operational"
+          },
+          {
+            title: "Operating Temperature",
+            content: "-40° to 85° C"
+          },
+          {
+            title: "Part Number",
+            content: "100001262 (58-0150)"
+          }
+        ],
+        "docs-column1": [{
+            title: "Data Sheet",
+            content: "Download",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/articles/6000255655-100001262-datasheet"
+          },
+          {
+            title: "User Manual",
+            content: "Download",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/articles/6000255656-100001262-manual"
+          },
+          {
+            title: "3D Model (STEP)",
+            content: "Download",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/articles/6000255658-100001262-drawing"
+          },
+        
+        ]
+        ,
+          "docs-column2": [ {
+            title: "View Support Portal",
+            content: "Explore",
+          link: "https://stwtechnic.freshdesk.com/support/solutions/folders/6000224962"
+          }
+        ],
+      };
+      var ioBLOC6OutputData = {
+        "specs-column1": [{
+            title: "Communication Protocol",
+            content: "SAE J1939"
+          },
+          {
+            title: "Output Variants",
+            content: "PWMI (Current Feedback) or Digital"
+          },
+          {
+            title: "Power Supply Voltage",
+            content: "8 - 32VDC"
+          },
+          {
+            title: "Operating Current",
+            content: "13A Max"
+          },
+          {
+            title: "Max per Output",
+            content: "3A"
+          },
+          {
+            title: "Module Connector",
+            content: "DT04-12PA"
+          },
+          {
+            title: "Mating Connector",
+            content: "DT06-12SA"
+          },
+          {
+            title: "Mating Contact",
+            content: "0462-201-16141"
+          },
+          {
+            title: "Mating Wedge Lock",
+            content: "W12P"
+          },
+          {
+            title: "Dimensions (L x W x H)",
+            content: "3.7 x 5.15 x 1.86 in"
+          },
+
+        ],
+        "specs-column2": [{
+            title: "Protection Class",
+            content: "IP67"
+          },
+          {
+            title: "Mechanical Shock",
+            content: "50g Operational"
+          },
+          {
+            title: "Operating Temperature",
+            content: "-40° to 85° C"
+          },
+          {
+            title: "Part Number",
+            content: "100001263 (58-0170)"
+          }
+        ],
+        "docs-column1": [{
+            title: "Data Sheet",
+            content: "Download",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/articles/6000255660-100001263-datasheet"
+          },
+          {
+            title: "User Manual",
+            content: "Download",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/articles/6000255662-100001263-manual"
+          },
+          {
+            title: "3D Model (STEP)",
+            content: "Download",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/articles/6000255664-100001263-drawing"
+          },
+        
+        ],
+          "docs-column2": [ {
+            title: "View Support Portal",
+            content: "Explore",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/folders/6000241066"
+          }
+        ],
+      };
+
+      var ioBLOC6InputOutputData = {
+        "specs-column1": [{
+            title: "Communication Protocol",
+            content: "SAE J1939"
+          },
+          {
+            title: "Input Variants",
+            content: "Multifunctional, Analog, Frequency, Digital, or Ratiometric"
+          },
+          {
+            title: "Output Variants",
+            content: "PWMI (Current Feedback) or Digital"
+          },
+          {
+            title: "Power Supply Voltage",
+            content: "8 - 32VDC"
+          },
+          {
+            title: "Operating Current",
+            content: "13A Max"
+          },
+          {
+            title: "Max per Output",
+            content: "3A"
+          },
+          {
+            title: "Module Connector",
+            content: "DT04-12PA"
+          },
+          {
+            title: "Mating Connector",
+            content: "DT06-12SA"
+          },
+          {
+            title: "Mating Contact",
+            content: "0462-201-16141"
+          },
+          {
+            title: "Mating Wedge Lock",
+            content: "W12P"
+          },
+          {
+            title: "Dimensions (L x W x H)",
+            content: "3.7 x 5.15 x 1.86 in"
+          },
+          {
+            title: "Protection Class",
+            content: "IP67"
+          },
+
+        ],
+        "specs-column2": [{
+            title: "Mechanical Shock",
+            content: "50g Operational"
+          },
+          {
+            title: "Operating Temperature",
+            content: "-40° to 85° C"
+          },
+          {
+            title: "Part Number",
+            content: "100001264 (58-0160)"
+          }
+        ],
+        "docs-column1": [{
+            title: "Data Sheet",
+            content: "Download",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/articles/6000255665-100001264-datasheet"
+          },
+          {
+            title: "User Manual",
+            content: "Download",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/articles/6000255666-100001264-manual"
+          },
+          {
+            title: "3D Model (STEP)",
+            content: "Download",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/articles/6000255668-100001264-drawing"
+          },
+         
+        ],
+          "docs-column2": [ {
+            title: "View Support Portal",
+            content: "Explore",
+            link: "https://stwtechnic.freshdesk.com/support/solutions/folders/6000241067"
+          }
+        ],
+        
+      };
+
+  var productsData = [{
+          name: "6 Input",
+          data: ioBLOC6Data,
+          image: "http://stwusastg.wpengine.com/wp-content/uploads/2023/08/iobloc-6-expansion_6-input@1200px_comp.png"
+        },
+        {
+          name: "6 Output",
+          data: ioBLOC6OutputData,
+          image: "http://stwusastg.wpengine.com/wp-content/uploads/2023/08/iobloc-6-expansion_6-output@1200px_comp.png"
+
+        },
+        {
+          name: "2 Input / 4 Output",
+          data: ioBLOC6InputOutputData,
+                    image: "http://stwusastg.wpengine.com/wp-content/uploads/2023/08/iobloc-6-expansion_2-input-4-output@1200px_comp.png"
+
+        },
+
+
+        // ... other products ...
+      ];
+
+      // Populate the product dropdown
+      function populateDropdown() {
+        const selector = document.getElementById('productSelector');
+
+        productsData.forEach(product => {
+          const option = document.createElement('option');
+          option.value = product.name;
+          option.textContent = product.name;
+          option.classList.add('drop-down-option');
+          selector.appendChild(option);
+        });
+      }
+
+      // Display the selected product
+      function displayProduct(productName) {
+        // If the product details div was initially hidden, we show it:
+        const productDisplayDiv = document.getElementById('productDisplay');
+        productDisplayDiv.style.display = 'block';
+
+        const selectedProduct = productsData.find(product => product.name === productName);
+        if (selectedProduct) {
+          // Update the image src and alt text based on the selected product
+          document.getElementById("tabImage").src = selectedProduct.image;
+          document.getElementById("tabImage").alt = selectedProduct.name;
+
+          // Parse the 'specs' data:
+          const specsColumn1 = document.getElementById('specs-column1');
+          const specsColumn2 = document.getElementById('specs-column2');
+
+          specsColumn1.innerHTML = generateSpecsContent(selectedProduct.data['specs-column1']);
+          specsColumn2.innerHTML = generateSpecsContent(selectedProduct.data['specs-column2']);
+
+          // Parse the 'docs' data:
+          const docsColumn1 = document.getElementById('docs-column1');
+          const docsColumn2 = document.getElementById('docs-column2');
+
+          docsColumn1.innerHTML = generateDocsContent(selectedProduct.data['docs-column1']);
+          docsColumn2.innerHTML = generateDocsContent(selectedProduct.data['docs-column2']);
+
+          // Automatically show the 'Specifications' tab when a product is selected:
+          showTab('tab1');
+        }
+      }
+
+
+      // Helper function to generate the content for 'specs' columns:
+      function generateSpecsContent(specsData) {
+        let content = '';
+        specsData.forEach(spec => {
+          content += `<div  class="specs-link-div"><h4 class="specs-title">${spec.title}</h4><p class="specs-subtitle">${spec.content}</p></div>`;
+        });
+        return content;
+      }
+
+      // Helper function to generate the content for 'docs' columns:
+      function generateDocsContent(docsData) {
+        let content = '';
+        try {
+          if (!docsData || !Array.isArray(docsData)) {
+            throw new Error("Invalid or missing docsData. Expected an array.");
+          }
+
+          docsData.forEach(doc => {
+            if (!doc || typeof doc !== 'object') {
+              throw new Error("Each doc item should be an object.");
+            }
+
+            if (doc.link) {
+              content += `<div class="doc-link-div"><h4 class="doc-title">${doc.title}</h4><p><a href="${doc.link}" target="_blank" class="doc-content" style="color: #31B469;">${doc.content}</a></p></div>`;
+            } else {
+              content += `<h4 class="doc-title>${doc.title}</h4><p class="doc-subtitle">${doc.content}</p>`;
+            }
+
+          });
+        } catch (error) {
+          console.error("Error generating docs content:", error.message);
+        }
+        return content;
+      }
+
+
+
+
+      const productSelector = document.getElementById('productSelector');
+      productSelector.addEventListener('change', (event) => {
+        displayProduct(event.target.value);
+      });
+
+
+      // Event listener for dropdown change
+      document.getElementById('productSelector').addEventListener('change', function() {
+        const selectedName = this.value;
+        displayProduct(selectedName);
+      });
+
+      // Initial population
+      populateDropdown();
+
+      function loadContent() {
+        productsData.forEach(product => {
+          for (let section in product.data) {
+            console.log("Loading data for product:", product.name, "Section:", section);
+
+            // Check if the data for the section exists and is an array
+            if (Array.isArray(product.data[section])) {
+              product.data[section].forEach(item => {
+                const container = document.getElementById(section);
+
+                // Create a title and content for each item
+                const itemTitle = document.createElement("h3");
+                itemTitle.textContent = item.title;
+                container.appendChild(itemTitle);
+
+                const itemContent = document.createElement("span");
+                itemContent.textContent = item.content;
+                container.appendChild(itemContent);
+
+                // If there's an imgUrl and the section ends with "column1", update the tab image
+                if (item.imgUrl && section.endsWith("column1")) {
+                  document.getElementById("tabImage").src = item.imgUrl;
+                }
+              });
+            } else {
+              console.error("Data for product:", product.name, "Section:", section, "is missing or not an array.");
+            }
+          }
+        });
+      }
+
+
+      function showTab(tabId) {
+        // Reset all buttons
+        document.getElementById('btn1').classList.remove('active');
+        document.getElementById('btn2').classList.remove('active');
+
+        // Hide all tabs
+        document.getElementById('tab1').style.display = 'none';
+        document.getElementById('tab2').style.display = 'none';
+
+        // Show the selected tab
+        document.getElementById(tabId).style.display = 'block';
+
+        // Highlight the active button
+        if (tabId === 'tab1') {
+          document.getElementById('btn1').classList.add('active');
+        } else if (tabId === 'tab2') {
+          document.getElementById('btn2').classList.add('active');
+        }
+      }
+
+      loadContent(); // Load content when page loads
+      showTab('tab1'); // Show the first tab by default
+      displayProduct(productsData[0].name);
+
+    </script>
+
+  </body>
+
+</html>
